@@ -24,6 +24,7 @@ export default defineConfig({
              collapsible: true,
              collapsed: true,
              items: [
+                { text: "TypeScript",link:"/project/web/knowdage/ts" },
                 { text: "Vue全家桶",link:"/project/web/knowdage/vue" },
                 { text: "打包工具",link:"/project/web/knowdage/webpack" },
                 { text: "包管理器",link:"/project/web/knowdage/PackageManager" },
