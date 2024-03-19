@@ -150,7 +150,7 @@ toString() 转为字符串
 
 2.如果使用delete数组中的空间会浪费,如下图
 
-![img](/public/images/8.png)
+![img](/images/8.png)
 
 第二版 使用删除对象的特性可以解决第一版队列的缺点
 

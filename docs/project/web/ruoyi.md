@@ -19,17 +19,18 @@
 5.layout 文件夹下新建索引 index.vue
 
 ~~~vue
-    <template>
-    <component :is="layoutType"></component>
-    </template>
 
-    <script setup>
-    import useSettingsStore from "../store/modules/settings";
-    import {computed} from "vue";
+<template>
+  <component :is="layoutType"></component>
+</template>
 
-    const settingsStore = useSettingsStore()
-    const layoutType = computed(() => settingsStore.layoutType)
-    </script>
+<script setup>
+import useSettingsStore from "../store/modules/settings";
+import {computed} from "docs/project/web/knowdage/vue";
+
+const settingsStore = useSettingsStore()
+const layoutType = computed(() => settingsStore.layoutType)
+</script>
 ~~~
 
 6.提到的 layoutType 为全局变量

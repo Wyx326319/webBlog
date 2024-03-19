@@ -150,9 +150,9 @@ postcss-loader postcss-preset-env css-loader vue-style-loader less
 less-loader sass sass-loader stylus stylus-loader -D
 ```
 如果出现以下错误
-![img](/public/images/install.png)  
+![img](/images/install.png)  
 将下载指令下图指令
-![img](/public/images/trueInstall.png)  
+![img](/images/trueInstall.png)  
 
 ## 处理js文件
 1.配置js相关loader和插件
@@ -284,8 +284,9 @@ export default {
 
 ```
 4.修改main.js中的代码
+
 ```js
-import { createApp } from 'vue'
+import {createApp} from 'docs/project/web/knowdage/vue'
 import App from './App.vue'
 
 const app = createApp(App)
@@ -300,7 +301,7 @@ app.mount("#app")
 ```
 6.执行npm run dev  
 出现以下错误
-![img](/public/images/crossenv.png)  
+![img](/images/crossenv.png)  
 下载cross-env包，执行 npm install --save-dev cross-env  
 修改package中的指令为  
 ```json
@@ -311,10 +312,11 @@ app.mount("#app")
 ```
 重新执行 npm run dev
 7.浏览器控制台会出现以下警告  
-![img](/public/images/vue-cli/vueWarning.png)  
+![img](/images/vue-cli/vueWarning.png)  
 引入 DefinePlugin,并填写以下配置
+
 ```js
-const { DefinePlugin } = require("webpack");
+const {DefinePlugin} = require("docs/project/web/knowdage/webpack");
 
 new DefinePlugin({
     __VUE_OPTIONS_API__: true,
@@ -515,6 +517,7 @@ npm install imagemin-gifsicle imagemin-jpegtran imagemin-optipng imagemin-svgo -
 
 ## 完整搭建的vue-cli
 webpack.config.js
+
 ```js
 const path = require("path")
 const HtmlWebpackPlugin = require('html-webpack-plugin')
@@ -523,8 +526,8 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin') // 将css提取�
 const CssMinimizerWebpackPlugin = require("css-minimizer-webpack-plugin") //css压缩
 const EslintWebpackPlugin = require("eslint-webpack-plugin");
 const ImageMinimizerPlugin = require("image-minimizer-webpack-plugin");
-const { DefinePlugin } = require("webpack");
-const { VueLoaderPlugin } = require("vue-loader");
+const {DefinePlugin} = require("docs/project/web/knowdage/webpack");
+const {VueLoaderPlugin} = require("vue-loader");
 const CopyPlugin = require("copy-webpack-plugin");
 
 
@@ -557,12 +560,12 @@ module.exports = {
     // 加载器
     module: {
         rules: [
-             // loader的位置
-             { test: /\.css$/, use: getStyleLoader() },
-             { test: /\.less$/, use: getStyleLoader("less-loader") },
-             { test: /\.s[ac]ss$/, use: getStyleLoader("sass-loader") },
-             { test: /\.styl$/, use: getStyleLoader("stylus-loader") },
-             {
+            // loader的位置
+            {test: /\.css$/, use: getStyleLoader()},
+            {test: /\.less$/, use: getStyleLoader("less-loader")},
+            {test: /\.s[ac]ss$/, use: getStyleLoader("sass-loader")},
+            {test: /\.styl$/, use: getStyleLoader("stylus-loader")},
+            {
                 test: /.js$/,
                 loader: "babel-loader",
                 options: {
@@ -575,7 +578,7 @@ module.exports = {
                 loader: "vue-loader",
                 options: {
                     // 开启缓存
-                    cacheDirectory: path.resolve(__dirname,"../node_modules/.cache/vue-loader")
+                    cacheDirectory: path.resolve(__dirname, "../node_modules/.cache/vue-loader")
                 }
             },
             {
@@ -597,7 +600,7 @@ module.exports = {
     plugins: [
         new HtmlWebpackPlugin({
             // 模板
-            template: path.resolve(__dirname,"./public/index.html")
+            template: path.resolve(__dirname, "./public/index.html")
         }),
         isProduction && new MiniCssExtractPlugin({
             filename: "static/css/[name].[contenthash:10].css",
@@ -662,9 +665,9 @@ module.exports = {
                     implementation: ImageMinimizerPlugin.imageminGenerate,
                     options: {
                         plugins: [
-                            ["gifsicle", { interlaced: true }],
-                            ["jpegtran", { progressive: true }],
-                            ["optipng", { optimizationLevel: 5 }],
+                            ["gifsicle", {interlaced: true}],
+                            ["jpegtran", {progressive: true}],
+                            ["optipng", {optimizationLevel: 5}],
                             [
                                 "svgo",
                                 {
