@@ -4,7 +4,7 @@ import { defineConfig } from 'vitepress'
 export default defineConfig({
   head: [["link", { rel: "icon", href: "/images/logo.png" }]],
   lastUpdated: true,
-  base: '/vite-press/',
+  base: '',
   title: "王玉祥",
   description: "A VitePress 111Site",
 
@@ -26,7 +26,10 @@ export default defineConfig({
              items: [
                 { text: "TypeScript",link:"/project/web/knowdage/ts" },
                 { text: "Vue全家桶",link:"/project/web/knowdage/vue" },
-                { text: "打包工具",link:"/project/web/knowdage/webpack" },
+                { text: "打包工具",items:[
+                  {text: "Webpack",link:"/project/web/knowdage/webpack"},
+                  {text: "gulp",link:"/project/web/knowdage/gulp"}
+                ] },
                 { text: "包管理器",link:"/project/web/knowdage/PackageManager" },
              ]
          }
