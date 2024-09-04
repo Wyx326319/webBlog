@@ -19,6 +19,8 @@ export default defineConfig({
           { text: "VitePress打造个人博客",link:"/project/web/blog" },
           { text: "从零搭建Vue-cli",link:"/project/web/VueCli" },
           { text: "从零搭建React-cli",link:"/project/web/reactCli" },
+          { text: "百度图片拖拽",link:"/project/web/百度图片拖拽" },
+          { text: "Vue大屏可视化适配方案",link:"/project/web/fullscreen" },
           {
              text: "前端知识",
              collapsible: true,
