@@ -6,15 +6,16 @@ export default defineConfig({
   lastUpdated: true,
   base: '',
   title: "王玉祥",
-  description: "A VitePress 111Site",
+  description: "菜鸟程序员的修炼",
 
   themeConfig: {
     outlineTitle: "文章目录",
-    outline:[2,6],
+    outline:[2,2],
     // https://vitepress.dev/reference/default-theme-config
     logo: "/images/logo.png",
     sidebar: [
          { text: "前端",items: [
+           { text: "开发场景应用",link:"/project/web/scene" },
           { text: "若依皮肤改造",link:"/project/web/ruoyi" },
           { text: "VitePress打造个人博客",link:"/project/web/blog" },
           { text: "从零搭建Vue-cli",link:"/project/web/VueCli" },
