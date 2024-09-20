@@ -15,6 +15,7 @@ export default defineConfig({
     logo: "/images/logo.png",
     sidebar: [
          { text: "前端",items: [
+           { text: "鸿蒙开发",link:"/project/harmonyOS/index" },
            { text: "开发场景应用",link:"/project/web/scene" },
           { text: "若依皮肤改造",link:"/project/web/ruoyi" },
           { text: "VitePress打造个人博客",link:"/project/web/blog" },
