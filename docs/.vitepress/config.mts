@@ -5,7 +5,7 @@ export default defineConfig({
   head: [["link", { rel: "icon", href: "/images/logo.png" }]],
   lastUpdated: true,
   base: '',
-  title: "王玉祥",
+  title: "王恒|技术分享",
   description: "菜鸟程序员的修炼",
 
   themeConfig: {
