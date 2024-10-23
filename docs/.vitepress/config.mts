@@ -15,6 +15,7 @@ export default defineConfig({
     logo: "/images/logo.png",
     sidebar: [
          { text: "前端",items: [
+           { text: "QT",link:"/project/web/QT" },
            { text: "鸿蒙开发",link:"/project/harmonyOS/index" },
            { text: "开发场景应用",link:"/project/web/scene" },
           { text: "若依皮肤改造",link:"/project/web/ruoyi" },
@@ -75,7 +76,7 @@ export default defineConfig({
       { text: '首页', link: '/' },
       { text: "前端",link:"/project/web/ruoyi" },
       { text: "后端",link:"/project/service/java" },
-      { text: '八股文', link:"/essay/web/knowledge"},
+      { text: '工具', link:"/essay/web/tools"},
       { text: '算法',items:[
         { text: "数据结构与算法学习",link: "/algorithm/index" },
         { text: "javascript",link: "/algorithm/Javascript/index" },

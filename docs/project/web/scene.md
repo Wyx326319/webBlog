@@ -19,3 +19,20 @@
 ## 4.等高的瀑布流和不等高的瀑布流如何实现
 
 ## 5.扫码登陆的流程
+
+## 6.在邮件中制作html
+有很多公司都会在邮件中给自家的用户发送邮件进行沟通或者营销推广，但是在邮件中，由于为了安全，会过滤掉很多东西，例如js,css中的定位，浮动等等。
+以下是邮件html的一些注意点：  
+1. 不支持js，js在所有的邮件系统中都会被过滤掉，所以不要写js  
+2. 整体的布局使用table，布局不能使用弹性盒(flex),定位(position),少用浮动(float),清除浮动可以使用下列代码,可以使用display:inline-block  
+```html
+<table style="clear:both"></table>
+```
+3. 图片是唯一可以引用的外部资源。其他的外部资源，比如样式表文件、字体文件、视频文件等，一概不能引用。并且会过滤掉style标签，所以所有的css都要写成内联样式
+4. 图片要指定宽高，不少客户端默认不显示图片（比如Gmail），所以要确保即使没有图片，主要内容也能被阅读,主要的布局也能正常显示。
+5. 背景图片不能使用background-image,image会被过滤掉，但是可以使用background来代替，但是功能有限   
+6. 如果 td 和 td 之间有间隔，使用```<td style="border-bottom:10px solid #fff"></td>```，这样写的话 td 之间是不会有间隔的。使用```<td style="margin-bottom: 10px"></td>```也是不会有空格的。如果 td 之间有间隙，必须用```<td></td><td height="10px"> </td><td></td>```来隔开。但是如果是 table，则```<table style="border-top:10px solid #ffffff; border-bottom:20px solid #ffffff"></table>```里面的内容会在上下有空行。
+7. font-family属性不能为空，否则会被QQ屏蔽为垃圾邮件。
+8. 若邮件模板内侧边或者上下有空白间距，不要用 padding，必须得用标准的 td 来设定空白间距，否则会导致各个邮箱解析不同。
+
+### 总的来说，邮件中的html 标签和属性能解决的样式决不使用 CSS 样式。
