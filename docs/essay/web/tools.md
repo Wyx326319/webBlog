@@ -70,19 +70,30 @@ nvm use <version>           // 切换到使用指定的nodejs版本
 nvm v                       // 显示nvm版本
 nvm install stable          // 安装最新稳定版
 ```
-## 5. idea 30天无限重置包
+
+## 5. 批量打开网页工具
+这个工具可以同时打开多个页面，方便多页面应用的修改和查看
+链接: [http://www.openurls.com.cn/](http://www.openurls.com.cn/)  
+
+## 6. 图片转base64
+好用的在线工具 [ https://www.sojson.com/image2base64.html]( https://www.sojson.com/image2base64.html) 
+
+
+## 7. idea 30天无限重置包
 链接: [https://pan.baidu.com/s/1v5uFnPaTy77hKi7N9pdHHw?pwd=8937](https://pan.baidu.com/s/1v5uFnPaTy77hKi7N9pdHHw?pwd=8937)  
 提取码: 8937
 
 idea,webstorm都可以使用，这个包只支持2021.3.6以下的版本
 
-## 6. Navicat Premium 12(免费)
+## 8. Navicat Premium 12(免费)
 
 Navicat Premium 数据库图形化界面  
 链接: [https://pan.baidu.com/s/1wIm38TST0-RtUV6mlSSgDg?pwd=vpwc](https://pan.baidu.com/s/1wIm38TST0-RtUV6mlSSgDg?pwd=vpwc)  
 提取码: vpwc 
 
-## 7. KeePass
-KeePass 是一款高效的密码管理工具
+## 9. KeePass
+KeePass 是一款高效的密码管理工具  
 链接: [https://pan.baidu.com/s/1x4dkSyz5hJC00bQ-1isg0A?pwd=c4ed](https://pan.baidu.com/s/1x4dkSyz5hJC00bQ-1isg0A?pwd=c4ed)  
 提取码: c4ed 
+
+
