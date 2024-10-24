@@ -15,6 +15,7 @@ export default defineConfig({
     logo: "/images/logo.png",
     sidebar: [
          { text: "前端",items: [
+           { text: "css",link:"/project/web/css" },
            { text: "QT",link:"/project/web/QT" },
            { text: "鸿蒙开发",link:"/project/harmonyOS/index" },
            { text: "开发场景应用",link:"/project/web/scene" },
