@@ -31,3 +31,19 @@ giteePage服务仓库地址
 
 修改完成后重新进行打包，部署就好啦！
 
+
+## 如何将github上部署的博客绑定自己的域名
+
+### 第一步在[阿里云官网](https://www.aliyun.com/)购买自己的域名
+1.打开域名列表点击解析  
+![img](/images/vitepress/aliyun.png)
+2.点击添加记录
+![img](/images/vitepress/aliyun1.png)
+3.记录类型选择CNAME，主机记录填入www,记录值写自己github博客地址的域名,然后点击确定
+![img](/images/vitepress/aliyun2.png)
+4.进入自己的github仓库，项目的根目录下创建一个CNAME文件，在CNAME文件中填入自己购买的域名。
+5.在github的settings下,点击page,在该页面的下方Custom domain中填入自己购买的域名，然后点击Save.
+![img](/images/vitepress/aliyun3.png)
+6.当该页面上方博客地址变化为自己的域名就绑定成功啦 !
+![img](/images/vitepress/aliyun4.png)
+

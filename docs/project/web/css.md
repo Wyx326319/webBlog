@@ -58,7 +58,37 @@
 ![img](/images/css/text-stroke.png)  
 优点: 描边平滑，支持透明  
 缺点: 兼容性较差  
+## 立体文字
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    body{
+      background: #ccc;
+    }
+    .text{
+      font-size: 90px;
+      text-align: center;
+      margin-top: 200px;
+      text-shadow: 1px -1px #fff,-1px 1px #999,-5px 5px 2px #808080;
+      color: #e6e6e6;
+    }
+  </style>
+</head>
+<body>
+  <div class="text">
+    立体文字效果
+  </div>
+</body>
+</html>
+```
 
+效果如下: 
+![img](/images/css/text.png)
 
 ## 跑马灯(无缝)
 ```html
@@ -110,3 +140,218 @@
 
 ##### 突然出现一个这样的场景
 两个跑马灯，但是文字的长度是不一样的，并且是动态获取的，如何能够保证他们的滚动速度是一样的，并且当数据改变后，不需要维护。
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>跑马灯</title>
+    <style>
+.marquee {
+  width: 26px;
+  height: 100px;
+  overflow: hidden;
+  box-sizing: border-box;
+  border: 1px solid red;
+  text-align: center;
+  margin: 0 auto;
+}
+.marquee2 {
+  width: 26px;
+  height: 100px;
+  overflow: hidden;
+  box-sizing: border-box;
+  border: 1px solid red;
+  text-align: center;
+  margin: 0 auto;
+}
+ 
+.marquee p {
+  width: 100%;
+  animation: marquee 10s linear infinite;
+}
+
+.marquee2 p {
+  width: 100%;
+  animation: marquee2 23s linear infinite;
+}
+ 
+@keyframes marquee {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-50%); }
+}
+@keyframes marquee2 {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-50%); }
+}
+    </style>
+
+</head>
+
+<body>
+  <div style="display: flex;justify-content: center;">
+    <div class="marquee">
+        <p>我是跑马灯1号<span>我是跑马灯1号</span></p>
+      </div>
+    <div class="marquee2">
+        <p>我是跑马灯什么什么什么什么什么号<span>我是跑马灯什么什么什么什么什么号</span></p>
+      </div>
+  </div>
+</body>
+
+</html>
+```
+这个跑马灯需要根据数据的长度来计算动画的时间保证两个跑马灯的速度是相同的,上面的代码为两个简单的相同速度的跑马灯，其实也没有什么不一样，只有动画时间是不一样的。
+
+效果如下:  
+![img](/images/css/marquee3.png)
+
+## 跑马灯边框
+
+### 首尾不相连
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+:root{
+  --border-width: 5px;
+}
+
+.loginForm{
+  width: 400px;
+  height: 300px;
+  padding: var(--border-width);
+  border-radius: 10px;
+  position: relative;
+  overflow: hidden;
+  background: transparent;
+  margin: 200px auto;
+}
+
+.loginForm::after{
+  content: "";
+  position: absolute;
+  left: var(--border-width);
+  top: var(--border-width);
+  background: #ccc;
+  width: calc(100% - var(--border-width) * 2);
+  height: calc(100% - var(--border-width) * 2);
+  z-index: -1;
+  border-radius: 6px;
+}
+
+.loginForm::before {
+  width: 510px;
+  height: 510px;
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  background: linear-gradient(90deg, #000, yellow 20%);
+  transform-origin: 0 0;
+  z-index: -2;
+  animation: rotate1 3s linear infinite;
+}
+
+    @keyframes rotate1 {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="loginForm">
+    跑马灯边框
+  </div>
+</body>
+</html>
+```
+
+![img](/images/css/2.png)
+
+
+### 首尾相连
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+:root{
+  --border-width: 5px;
+}
+
+.loginForm{
+  width: 400px;
+  height: 300px;
+  padding: var(--border-width);
+  border-radius: 10px;
+  position: relative;
+  overflow: hidden;
+  background: transparent;
+  margin: 200px auto;
+}
+
+.loginForm::after{
+  content: "";
+  position: absolute;
+  left: var(--border-width);
+  top: var(--border-width);
+  background: #ccc;
+  width: calc(100% - var(--border-width) * 2);
+  height: calc(100% - var(--border-width) * 2);
+  z-index: -1;
+  border-radius: 6px;
+}
+
+.loginForm::before {
+  width: 510px;
+  height: 510px;
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateY(-50%) translateX(-50%);
+  background: linear-gradient(90deg, #000, yellow 20%);
+  transform-origin: center center;
+  z-index: -2;
+  animation: rotate1 3s linear infinite;
+}
+
+    @keyframes rotate1 {
+      0% {
+        transform: translateY(-50%) translateX(-50%) rotate(0deg);
+      }
+
+      100% {
+        transform: translateY(-50%) translateX(-50%) rotate(360deg);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="loginForm">
+    跑马灯边框
+  </div>
+</body>
+</html>
+```
+![img](/images/css/1.png)
+## 瀑布流
+
+#### 等高的瀑布流
+
+#### 不等高的瀑布流

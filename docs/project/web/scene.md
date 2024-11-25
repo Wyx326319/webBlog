@@ -11,16 +11,11 @@
 ```
 ### 第二种: 通过比较屏幕的宽度判断设备类型 (不建议使用)
 
-
 ## 2.单点登录如何实现
 
-## 3.跑马灯如何实现
+## 3.扫码登陆的流程
 
-## 4.等高的瀑布流和不等高的瀑布流如何实现
-
-## 5.扫码登陆的流程
-
-## 6.在邮件中制作html
+## 4.在邮件中制作html
 有很多公司都会在邮件中给自家的用户发送邮件进行沟通或者营销推广，但是在邮件中，由于为了安全，会过滤掉很多东西，例如js,css中的定位，浮动等等。
 以下是邮件html的一些注意点：  
 1. 不支持js，js在所有的邮件系统中都会被过滤掉，所以不要写js  
@@ -36,3 +31,244 @@
 8. 若邮件模板内侧边或者上下有空白间距，不要用 padding，必须得用标准的 td 来设定空白间距，否则会导致各个邮箱解析不同。
 
 ### 总的来说，邮件中的html 标签和属性能解决的样式决不使用 CSS 样式。
+
+## 5.文件上传
+在实际开发过程中，文件上传或下载是一个非常常用的功能，我们先来实现文件上传的功能
+### 单文件上传
+前端代码
+```vue
+<template>
+  <div class="container">
+    // 单文件上传
+    <form id="form" action="http://localhost:8080/updateFile" method="post" enctype="multipart/form-data" target="_self">
+        <input type="file" name="image">
+        <input type="submit">
+    </form>
+  </div>
+</template>
+
+<script setup>
+
+</script>
+
+<style lang="scss" scoped>
+.container {
+    padding: 20px;
+    width: 100%;
+    height: 100%;
+}
+</style>
+```
+前后端交互的过程中很重要的一点就是input标签中的name属性一定要跟后端接收的参数名相同.
+form表单中的enctype属性一定要改成enctype="multipart/form-data" 编码格式
+
+后端代码
+
+我们这里主要是研究前端的文件上传，所以后端代码写的很简单
+```java
+@RestController
+@RequestMapping("/updateFile")
+public class FileController extends BaseController {
+    @PostMapping()
+    public AjaxResult updateFile(@RequestParam("image") MultipartFile multipartFile) {
+//        System.out.println(file.getOriginalFilename());
+        if (multipartFile.isEmpty()){
+            return AjaxResult.error("图片为空");
+        }
+        return AjaxResult.success();
+    }
+}
+```
+
+
+### 多文件上传
+
+相对于单文件上传，多文件上传的前端代码只是添加了一个属性,在input标签中加上multiple属性即可
+```html
+<template>
+  <div class="container">
+    文件上传
+    <form id="form" action="http://localhost:8080/updateFile" method="post" enctype="multipart/form-data" target="_self">
+        <input type="file" name="image" multiple @change="fileChange">
+        <input type="submit">
+    </form>
+  </div>
+</template>
+
+<script setup>
+function fileChange(e) {
+  console.log(e.target.files)
+}
+</script>
+
+<style lang="scss" scoped>
+.container {
+    padding: 20px;
+    width: 100%;
+    height: 100%;
+}
+</style>
+```
+
+可以在控制台看上传的文件
+![img](/images/scene/Mfile.png)
+
+但是这样是有一个缺陷的，就是必须是一次性点击多个图片，不能一张一张的点击图片.
+
+
+### 文件上传的几种方式
+上述的两种文件上传类型是使用form表单进行上传的，我们总结一下文件上传还有其他哪些方式  
+#### 1. 普通表单上传
+```html
+<form action="/index.php" method="POST" enctype="multipart/form-data">
+  <input type="file" name="myfile">
+  <input type="submit">
+</form>
+```
+这种上传方式需要注意的是 enctype类型设置为```mutipart/form-data```表明表单要提交二进制数据,并且需要跟后端沟通参数的名称```name="myfile"```  
+#### 2. 文件编码上传
+这个主要思路是将文件转为base64编码，在服务端进行解码。
+```html
+<template>
+  <div class="container">
+    文件转base64编码上传
+    <form action="http://localhost:8080/updateFile" method="post" enctype="multipart/form-data" @submit.prevent>
+      <input id="fileInput" type="file" name="image">
+      <button @click="converFileToBase64">编码base64</button>
+    </form>
+      <p>{{base64Str}}</p>
+  </div>
+</template>
+
+<script setup>
+  let base64Str = ""
+  // 转为base64
+  function converFileToBase64() {
+    let fileInput = document.getElementById("fileInput");
+    console.log(fileInput)
+    if (!fileInput.files.length){
+      alert("请先选择一个文件")
+    }
+    let file = fileInput.files[0]
+    let reader = new FileReader();
+    reader.onload=function (e){
+      base64Str = e.target.result;
+      console.log(base64Str)
+    }
+    //读取文件内容并转为base64编码的字符串
+    reader.readAsDataURL(file);
+  }
+</script>
+
+<style scoped lang="scss">
+</style>
+```
+base64编码的缺点在于其体积比原图片更大，base64将3个字节转为4个字节，所以编码后的文本会比原文本体积大三分之一左右，对于体积很大的文件来说，解析和上传的时间会明显增加
+
+#### 3. 文件异步上传(FormData对象)
+FormData对象主要用来组装一组用 XMLHttpRequest发送请求的键/值对，可以更加灵活地发送Ajax请求。可以使用FormData来模拟表单提交。
+
+```html
+<template>
+  <div class="container">
+    文件异步上传
+    <form id="form" action="http://localhost:8080/updateFile" method="post" enctype="multipart/form-data" target="_self">
+      <input type="file" name="image" multiple @change="fileChange">
+      <input type="submit">
+    </form>
+  </div>
+</template>
+
+<script setup>
+function fileChange(e) {
+  // 拿到上传文件对象
+  let file = e.target.files;
+  let formData = new FormData();
+
+  formData.append("image", file);
+  // axios发送请求
+  axios.post(url, formData);
+}
+</script>
+
+<style lang="scss" scoped>
+.container {
+  padding: 20px;
+  width: 100%;
+  height: 100%;
+}
+</style>
+```
+#### 4. iframe无刷新页面
+如果需要让用户体验异步上传文件，可以使用这种方式.  
+form表单提交会自动跳转页面，是由form表单的target属性决定的。target属性有四个值:  
+```html
+_self，默认值，在相同的窗口中打开响应页面
+_blank，在新窗口打开
+_parent，在父窗口打开
+_top，在最顶层的窗口打开
+framename，在指定名字的iframe中打开
+```
+把form的target属性设置为一个看不见的iframe，那么返回的数据就会被这个iframe接受，因此只有该iframe会被刷新，至于返回结果，也可以通过解析这个iframe内的文本来获取。
+具体代码如下:
+```html
+
+
+<template>
+<div class="container">
+  iframe上传
+  <form id="form" action="http://localhost:8080/updateFile" method="post" enctype="multipart/form-data" target="iframeFile">
+    <input type="file" name="image" multiple @change="fileChange">
+    <input type="submit">
+  </form>
+
+  <iframe src="https://www.baidu.com" width="0" height="0" frameborder="0" name="iframeFile" id="iframeFile"></iframe>
+</div>
+</template>
+<script setup>
+  
+</script>
+<style scoped lang="scss">
+
+</style>
+```
+
+
+    
+### 大文件上传
+在传输文件的过程中，大文件的传输是最头疼的，当网络断开或死机等情况，只能重新上传全部的文件，耗时费力。接下来我们探讨一下大文件上传的几种方案!
+
+#### 分片上传
+#### 断点续传
+#### 通过websocket上传
+
+
+## 6. token无感刷新
+当用户在使用当前的产品时，若token过期，怎么才能让用户无感知的继续使用产品呢?  
+有一个很简单粗暴的方法就是让token一直不过期，但是这回造成很大的安全问题,若token被人窃取，那么接口就可以一直被访问.  
+
+我看了一些资料，总结了实现token无感刷新的方法: 大概有3种思路.  
+第一种: 双token。  
+第二种: 若token过期请求前拦截请求，刷新token。  
+第三种: 请求后拦截返回的数据,若是token过期，则刷新token，再进行一次接口请求  
+
+在这里给大家推荐两篇文章  
+ [token无感刷新1](https://juejin.cn/post/6844903925078818829#heading-5)  
+ [token无感刷新2](https://juejin.cn/post/6844903925078818829#heading-7)
+
+### 方法一 请求前拦截
+
+### 方法二 请求后拦截
+
+### 方法三 双token
+
+## 7. 浏览器的存储与缓存
+浏览器的存储主要有三种方式: cookie，Local Storage, Session Storage
+浏览器的缓存可以适当的减少网络请求，提高页面的加载速度。浏览器缓存主要分为强缓存和协商缓存，强缓存
+
+### 浏览器的存储
+![img](/images/1.gif)
+
+### 浏览器的缓存
+
+

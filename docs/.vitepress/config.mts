@@ -5,7 +5,7 @@ export default defineConfig({
   head: [["link", { rel: "icon", href: "/images/logo.png" }]],
   lastUpdated: true,
   base: '',
-  title: "王恒|技术分享",
+  title: "王玉祥",
   description: "菜鸟程序员的修炼",
 
   themeConfig: {
@@ -17,8 +17,10 @@ export default defineConfig({
          { text: "前端",items: [
            { text: "css",link:"/project/web/css" },
            { text: "QT",link:"/project/web/QT" },
+           { text: "web前端大师课",link:"/project/web/session" },
            { text: "鸿蒙开发",link:"/project/harmonyOS/index" },
            { text: "开发场景应用",link:"/project/web/scene" },
+          { text: "搭建自己的前端框架",link:"/project/web/vue-front.md" },
           { text: "若依皮肤改造",link:"/project/web/ruoyi" },
           { text: "VitePress打造个人博客",link:"/project/web/blog" },
           { text: "从零搭建Vue-cli",link:"/project/web/VueCli" },
