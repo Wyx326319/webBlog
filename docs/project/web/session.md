@@ -96,8 +96,308 @@ JS是一门单线程的语言，这是因为它运行在浏览器的渲染主线
 浏览器永不阻塞，从而最大限度的保证了单线程的流畅运行。
 */
 ```
+### JS为何会阻碍渲染
+先看下列代码
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>JS会阻碍页面渲染</title>
+</head>
+<body>
+	<h1>JS会不会阻碍页面渲染</h1>
+	<button id="btn">change</button>
 
+	<script>
+
+
+		// 死循环
+		function delay(duration){
+			var start = Date.now()
+			while(Date.now() - start < duration) {}
+		}
+		const btn = document.getElementById("btn")
+		const h1 = document.querySelector("h1")
+		console.log(btn);
+		btn.onclick = function(){
+			console.log(1111111111)
+			h1.textContent = "JS会阻碍页面渲染"
+			delay(3000)
+		}
+	</script>
+</body>
+</html>
+```
+整个js的运行逻辑如下所示: 
+![img](/images/xuanran.png)
+
+### 任务有优先级吗? 
+任务没有优先级，在消息队列中先进先出
+但消息队列是有优先级的 
+根据w3c的最新解释: 
+1. 每个任务都有一个任务类型，同一个类型任务必须在一个队列，不同类型的任务可以分属于不同的队列。在一次事件循环中，浏览器可以根据实际情况从不同的队列中取出任务执行。  
+2. 浏览器必须准备好一个微队列，微队列中的任务优先所有其他任务执行
+
+在目前chrome的实现中，至少包含了下面的队列: 
+1. 延时队列: 用户存放计时器到达后的回调任务，优先级：中  
+2. 交互队列: 用户存放用户操作后的事件处理任务，优先级：高  
+3. 微队列: 用户存放需要最快执行的任务，优先级: 最高  ```添加任务到微队列的主要方式主要是使用Promise,MutationObserver```
+
+```面试题```  
+```阐述一下JS的事件循环```  
+```js
+/** 事件循环又叫做消息循环，是浏览器渲染主线程的工作方式。在 chrome 的源码中，
+ * 它开启一个不会结束的 for 循环，每次循环从消息队列中取出第一个任务执行，
+ * 而其他线程只需要在合适的时候将任务加入到队列末尾即可。过去把消息队列简单分为
+ * 宏队列和微队列，这种说法目前已无法满足复杂的浏览器环境，取而代之的是一种更加
+ * 灵活多变的处理方式。根据 W3C 官方的解释，每个任务有不同的类型，同类型的任务
+ * 必须在同一个队列，不同的任务可以属于不同的队列。不同任务队列有不同的优先级，
+ * 在一次事件循环中，由浏览器自行决定取哪一个队列的任务。但浏览器必须有一个微队
+ * 列，微队列的任务一定具有最高的优先级，必须优先调度执行。*/
+```
+
+```JS中的计时器能做到精准计时嘛```
+```js
+    /**
+     * JS做不到精准计时，主要有一下几点原因: 
+     * 1. 计算机硬件没有原子钟，无法做到精准计时
+     * 2. 操作系统的计时函数本身就有少量的误差，js的计时器最终调用的是操作系统的函数，也就携带了这些偏差
+     * 3. 按照w3c的标准，浏览器实现计时器时，如果嵌套层级超过5层，则会带有4毫秒的最少时间，这样在计时时间少于4毫秒时又带来了误差
+     * 4. 受事件循环的影响，计时器的回调函数只能在渲染主线程空闲时运行，因此又带来了误差
+     */
+```
+
+
+### 两句话总结事件循环  
+#### 1. 单线程是异步产生的原因
+#### 2. 事件循环是异步的实现方式
 
 ## 2.浏览器的渲染原理
 
+### 浏览器的渲染原理我们从下面这道面试开始看
+```当我们在浏览器中输入url发生了什么```  
+当我们在浏览器中输入url后，主要有两方面: 一方面是网络方面，另一方面就是渲染。
+我们这一部分主要学习渲染方面,看下面的图片
+![img](/images/liushuixian.png)
+#### 第一步 解析HTML
+解析HTML主要的是为了生成DOM树和CSSOM树
+![img](/images/jiexihtml.png)  
+当我们输入浏览器后，拿到的是一个字符串，通过解析这个字符串得到DOM,SOM树。  
+DOM树应该很好理解吧，这里就不说了，我们来说说SOM树
+![img](/images/CSSOM.png)
 
+在浏览器中提供了4种样式表: 1.浏览器的默认样式表；2.外部样式表；3.行内样式表；4.```<style></style>```
+
+除了浏览器的默认样式表，我们都可以修改。通常我们修改的都是行内样式表，但是我们可以通过```document.styleSheets[0].addRule```来修改其他的样式表
+
+#### 如果解析过程种遇到css代码该怎么办呢? 
+请看下面的图
+![img](/images/css.png)
+渲染主线程会自动开启一个预解析线程，解析css，但是最终的SOM树还是由渲染主线程组成的.
+这也是css不会阻塞HTML解析的根本原因，css的解析是在予解析线程里进行的所以不会阻塞HTML解析  
+
+#### 如果遇到js代码呢? 
+渲染主线程在遇到```<script></script>```标签后，会暂停html的解析，转而等待JS文件下载完成，执行完js的全局代码，才继续解析HTML.这是因为
+JS在执行的过程中可能会改变当前的DOM树，所以DOM树的生成必须暂停。这就是JS会阻塞HTML的根本原因。
+![img](/images/JS.png)
+
+#### 第二步 样式计算
+
+这一部分包含2个css重要的部分  
+1. css属性的计算过程(层叠，继承等)
+2. 视觉格式化模型(盒模型，包含块等)
+
+这部分主要是干什么呢？  
+主线程会遍历DOM树, 依次为树中的每个节点计算出它最终的样式，在这一过程中，很多预设值会变成绝对值，比如```red```会变成```rgb(255,0,0)```;相对单位会变成绝对单位，比如```em```会变成```px```
+
+这一步完成后，会得到一颗带有样式的DOM树  
+![img](/images/computedStyle.png)
+#### 第三步 布局
+这一步将计算出来的DOM树生成一个布局树，这里需要注意的是，布局树和DOM树是不一样的，比如```display: none```的元素不会在布局树上
+![img](/images/layout.png)
+这里有一个重要的规则: 
+1. 内容必须在行盒中
+2. 行盒和块盒不能相邻
+![img](/images/layoutTree.png)
+当内容在块盒中时，布局树会自动生成一个块盒放在其中  
+当行盒和块盒相邻时，布局树会自动将行盒外层包裹一层块盒
+
+
+这里有一个重要的概念```包含块```
+
+我们通过一个题来理解这个包含块
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>包含块</title>
+</head>
+<style>
+	.container{
+		width: 500px;
+		height: 500px;
+        border: 10px;
+        box-sizing: border-box;
+		background: #bfa;
+	}
+
+	a{
+		width: 300px;
+	}
+
+	img{
+		width: 100%;
+	}
+</style>
+<body>
+	<div class="container">
+		<a href="">
+			<img src="/images/bg.png" loading="lazy" alt="">
+		</a>
+	</div>
+</body>
+</html>
+```
+#### 请问图片的宽度是多少 ?
+
+正确答案： ```480px```  
+包含块是离该元素最近的祖先块盒
+#### 第四步 分层
+
+主线程会是使用一套复杂的策略对布局树进行分层
+
+分层的好处在于，将来在一个层改变后，仅会对该层进行后续处理，从而提高效率。
+
+滚动条，堆叠上下文，transform,opacity等样式都会或多或少影响分层的结果，也可以通过will-change属性更大程度的影响分层的结果。
+
+#### 第五步 绘制
+
+主线程会为每个层单独的产生绘制指令集，用于描述这一层的内容该如何画出来,主线程的工作到此为止，剩余的步骤交给其他线程完成。 
+
+#### 第六步 分块
+分块会将每一层分为多个小的区域,分块的工作是合成线程从线程池中拿出多个线程同时进行的
+![img](/images/fenkuai.png)
+
+#### 第七步 光栅化(Raster)
+光栅化是将每个块变成位图
+
+合成线程会将块信息交给GPU进程，以极高的速度完成光栅化。  
+GPU进程就会开启 多个线程来完成光栅化，并且优先处理靠近视口区域的块。  
+光栅化的结果，就是一块一块的位图
+
+光栅化也算是优化的一种，太多的工作要做，优先处理掉靠近视口区域的块
+
+![img](/images/Raster.png)
+
+此过程会用到GPU加速(可以提升光栅化的速度)
+
+#### 第八步 画
+合成线程计算出每个位图在屏幕上的位置，交给GPU进行最终呈现。
+![img](/images/draw.png)
+
+合成线程拿到每个层，每个块的位图后，生成一个个指引信息。
+指引会标识出每个位图应该画到屏幕的哪个位置，以及会考虑到旋转，缩放等变形。
+变形发生在合成线程，与渲染主线程无关，这就是```transform```效率高的本质原因。
+合成线程会把quad提交给GPU进程，由GPU进程产生系统调用，提交给CPU硬件，完成最终屏幕成像。
+
+
+#### 这就是渲染的整个过程
+
+下面我们思考几个问题？   
+```什么是reflow?```  
+reflow的本质就是重新计算layout树。  
+当进行了会影响布局树的操作后，需要重新计算布局树，会引发layout。
+为了避免连续的多次操作导致布局树反复计算，浏览器会合并这些操作，当JS代码全部完成后再进行统一计算。
+所以，改动属性造成的reflow是异步完成的。
+
+也同样因为如此， 当JS获取布局属性时，就可能造成无法获取到最新的布局信息。
+浏览器在反复权衡下，最终决定获取属性立即reflow。
+
+```什么是repaint?```  
+repaint的本质就是根据分层信息计算了绘制指令
+
+当改动了可见样式后，就需要重新计算，会引发repaint。  
+由于元素的布局信息也属于可见样式，所以reflow一定会引起repaint。
+
+```为什么transform的效率高?```  
+
+我们来看下面的代码
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<style>
+		*,.container{
+			margin: 0;
+			padding: 0;
+		}
+
+		.top{
+			width: 200px;
+			height: 200px;
+			border-radius: 50%;
+			background: red;
+			margin-top: 100px;
+			animation: move1 1s alternate infinite ease-in-out;
+		}
+
+		.bottom{
+			width: 200px;
+			height: 200px;
+			border-radius: 50%;
+			background: red;
+			position: absolute;
+			top:50%;
+			animation: move2 1s alternate infinite ease-in-out;
+			transition: left 1s;
+			left: 0;
+		}
+
+		#btn{
+			margin-top: 80px;
+			margin-left: 100px;
+		}
+
+
+		@keyframes move1 {
+			to{
+				transform: translate(100px);
+			}
+		}
+
+		@keyframes move2 {
+			to{
+				left: 100px;
+			}
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<button id="btn">死循环</button>
+		<div class="top"></div>
+		<div class="bottom"></div>
+	</div>
+	<script>
+		let btn = document.getElementById("btn")
+		btn.onclick= function(){
+			delay(3000)
+			}
+			
+		function delay(duration){
+			const start = Date.now()
+			while(Date.now() - start < duration){}
+		}
+	</script>
+</body>
+</html>
+```
+
+当点击死循环时，页面卡死，但是transform的小球动画还在动，为什么呢? 因为渲染主线程卡死，但是transform不在渲染主线程中。
