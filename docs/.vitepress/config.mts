@@ -16,7 +16,7 @@ export default defineConfig({
     sidebar: [
          { text: "前端",items: [
            { text: "css",link:"/project/web/css" },
-           { text: "QT",link:"/project/web/QT" },
+           { text: "qiankun微前端",link:"/project/web/qiankun" },
            { text: "web前端大师课",link:"/project/web/session" },
            { text: "鸿蒙开发",link:"/project/harmonyOS/index" },
            { text: "开发场景应用",link:"/project/web/scene" },
