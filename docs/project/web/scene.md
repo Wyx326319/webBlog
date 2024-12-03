@@ -244,8 +244,8 @@ framename，在指定名字的iframe中打开
 
 
 ## 6. token无感刷新
-当用户在使用当前的产品时，若token过期，怎么才能让用户无感知的继续使用产品呢?  
-有一个很简单粗暴的方法就是让token一直不过期，但是这回造成很大的安全问题,若token被人窃取，那么接口就可以一直被访问.  
+#### 业务场景分析  
+
 
 我看了一些资料，总结了实现token无感刷新的方法: 大概有3种思路.  
 第一种: 双token。  
@@ -256,18 +256,102 @@ framename，在指定名字的iframe中打开
  [token无感刷新1](https://juejin.cn/post/6844903925078818829#heading-5)  
  [token无感刷新2](https://juejin.cn/post/6844903925078818829#heading-7)
 
-### 方法一 请求前拦截
+### 方法一 长短token
 
+图解
+![img](/images/scene/twotoken.png)
+
+```javascript
+import axios from 'axios';
+
+```
 ### 方法二 请求后拦截
 
-### 方法三 双token
+### 方法三 请求前拦截
+
+```javascript
+import axios from 'axios'
+
+// 从localStorage中获取token
+function getLocalToken () {
+    const token = window.localStorage.getItem('token')
+    return token
+}
+
+// 给实例添加一个setToken方法，用于登录后将最新token动态添加到header，
+// 同时将token保存在localStorage中
+instance.setToken = (token) => {
+  instance.defaults.headers['X-Token'] = token
+  window.localStorage.setItem('token', token)
+}
+
+function refreshToken () {
+    // instance是当前request.js中已创建的axios实例
+    return instance.post('/refreshtoken').then(res => res.data)
+}
+
+// 创建一个axios实例
+const instance = axios.create({
+  baseURL: '/api',
+  timeout: 300000,
+  headers: {
+    'Content-Type': 'application/json',
+    'X-Token': getLocalToken() // headers塞token
+  }
+})
+
+// 是否正在刷新的标记
+let isRefreshing = false
+// 重试队列，每一项将是一个待执行的函数形式
+let requests = []
+
+instance.interceptors.response.use(response => {
+  const { code } = response.data
+  if (code === 1234) {
+    const config = response.config
+    if (!isRefreshing) {
+      isRefreshing = true
+      return refreshToken().then(res => {
+        const { token } = res.data
+        instance.setToken(token)
+        config.headers['X-Token'] = token
+        config.baseURL = ''
+        // 已经刷新了token，将所有队列中的请求进行重试
+        requests.forEach(cb => cb(token))
+        requests = []
+        return instance(config)
+      }).catch(res => {
+        console.error('refreshtoken error =>', res)
+        window.location.href = '/'
+      }).finally(() => {
+        isRefreshing = false
+      })
+    } else {
+      // 正在刷新token，将返回一个未执行resolve的promise
+      return new Promise((resolve) => {
+        // 将resolve放进队列，用一个函数形式来保存，等token刷新后直接执行
+        requests.push((token) => {
+          config.baseURL = ''
+          config.headers['X-Token'] = token
+          resolve(instance(config))
+        })
+      })
+    }
+  }
+  return response
+}, error => {
+  return Promise.reject(error)
+})
+
+export default instance
+```
 
 ## 7. 浏览器的存储与缓存
-浏览器的存储主要有三种方式: cookie，Local Storage, Session Storage
+浏览器的存储主要有三种方式: cookie, Local Storage, Session Storage
 浏览器的缓存可以适当的减少网络请求，提高页面的加载速度。浏览器缓存主要分为强缓存和协商缓存，强缓存
 
 ### 浏览器的存储
-![img](/images/1.gif)
+
 
 ### 浏览器的缓存
 

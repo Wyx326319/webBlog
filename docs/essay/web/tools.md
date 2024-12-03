@@ -18,6 +18,51 @@ Snipaste是一款简单但功能强大的截图和贴图工具，适用于Window
 ## 3. vscode插件
 ###### 1.background  
 这款插件可以自定义vscode的背景，优化vscode的美观程度  
+###### setting.json中的代码
+```json
+{
+    "workbench.colorTheme": "Monokai",
+    "security.workspace.trust.untrustedFiles": "open",
+    "workbench.editorAssociations": {
+        "*.ipynb": "jupyter-notebook"
+    },
+    "notebook.cellToolbarLocation": {
+        "default": "right",
+        "jupyter-notebook": "left"
+    },
+    //background 的相关配置
+    "update.enableWindowsBackgroundUpdates": true,
+    "background.style": {
+        "content":"''",
+        "pointer-events":"none",
+        "position":"fixed",//图片位置居中
+        "width":"100%",
+        "height":"100%",
+        "z-index":"99999",
+        "top":"0px",
+        "left":"0px",
+        "background.repeat":"no-repeat",
+        "background-size":"cover",//图片大小为全屏
+        "opacity":0.2 //透明度
+    },
+    "background.useFront": true,
+    "background.useDefault": false,
+    "background.fullscreen": {
+        "images": [],
+        "opacity": 0.91,
+        "size": "cover",
+        "position": "center",
+        "interval": 0
+    },
+    "editor.wordWrap": "on",
+    "background.customImages": [
+        "https://iknow-pic.cdn.bcebos.com/024f78f0f736afc36cf0dbf8a119ebc4b64512aa"
+    ],
+    "workbench.editor.enablePreview": false,
+    "javascript.updateImportsOnFileMove.enabled": "always",
+    "http.proxyAuthorization": null, //是否使用默认图片
+}
+```
 ###### 2.Chinese(Simplified)(简体中文)  
 这个插件将vscode的英文翻译为中文  
 ###### 3.Vetur  
