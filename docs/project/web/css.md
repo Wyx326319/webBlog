@@ -90,6 +90,64 @@
 效果如下: 
 ![img](/images/css/text.png)
 
+## 文字立起来的效果
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Carver玩转css</title>
+    <style>
+        *{
+          margin: 0;
+          padding: 0;
+        }
+
+        html{
+          overflow: hidden;
+        }
+
+        body{
+          background: #bababa;
+          overflow: hidden;
+          width: 100vw;
+          height: 100vh;
+        }
+
+        .text{
+          margin-top: 200px;
+          font-size: 80px;
+          color: #fff;
+          text-align: center;
+          position: relative;
+          width: fit-content;
+          left: 30%;
+        }
+
+        .text::after{
+          content: "立起来的文字效果";
+          position: absolute;
+          left: 0;
+          top: 0;
+          color: #000;
+          transform: translate(-51px, 20px) scaleY(0.5) skew(50deg) ;
+          z-index: -1;
+          filter: blur(5px);
+          -webkit-mask: linear-gradient(transparent, #000) 
+        }
+    </style>
+</head>
+<body>
+<div>
+    <h1 class="text">立起来的文字效果</h1>
+</div>
+</body>
+</html>
+```
+
+效果如下
+![img](/images/css/li.png)
+
 ## 跑马灯(无缝)
 ```html
 <!DOCTYPE html>
@@ -355,3 +413,5 @@
 #### 等高的瀑布流
 
 #### 不等高的瀑布流
+
+

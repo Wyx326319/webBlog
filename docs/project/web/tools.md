@@ -16,9 +16,9 @@ Snipaste是一款简单但功能强大的截图和贴图工具，适用于Window
  快捷键: F1 截屏;  F3 固定在屏幕上
 
 ## 3. vscode插件
-###### 1.background  
+### 1.background  
 这款插件可以自定义vscode的背景，优化vscode的美观程度  
-###### setting.json中的代码
+### setting.json中的代码
 ```json
 {
     "workbench.colorTheme": "Monokai",
@@ -63,14 +63,17 @@ Snipaste是一款简单但功能强大的截图和贴图工具，适用于Window
     "http.proxyAuthorization": null, //是否使用默认图片
 }
 ```
-###### 2.Chinese(Simplified)(简体中文)  
+### 2.Chinese(Simplified)(简体中文)  
 这个插件将vscode的英文翻译为中文  
-###### 3.Vetur  
+### 3.Vetur  
 这个插件可以快速的生成vue代码的模板  
-###### 4.Project Manager  
+### 4.Project Manager  
 这个插件可以在vscode中生成项目目录，实现快速切换项目，极大的提高了打开项目的效率  
-###### 5.Live Server  
+### 5.Live Server  
 这个插件可以快速的打开html网页
+
+### 6. Image preview
+这个插件能在vscode中快速的预览图片,查看图片的宽度和高度，在前端开发中可以提高开发的效率。
 
 ## 4.nvm(node版本管理工具)
 nvm可以通过命令行快速的切换node版本
@@ -140,5 +143,6 @@ Navicat Premium 数据库图形化界面
 KeePass 是一款高效的密码管理工具  
 链接: [https://pan.baidu.com/s/1x4dkSyz5hJC00bQ-1isg0A?pwd=c4ed](https://pan.baidu.com/s/1x4dkSyz5hJC00bQ-1isg0A?pwd=c4ed)  
 提取码: c4ed 
+
 
 
