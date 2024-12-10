@@ -127,19 +127,27 @@ nvm install stable          // 安装最新稳定版
 好用的在线工具 [ https://www.sojson.com/image2base64.html]( https://www.sojson.com/image2base64.html) 
 
 
-## 7. idea 30天无限重置包
+## 7. 图片格式转换工具
+[https://onlineconvertfree.com/zh/convert/hdr/](https://onlineconvertfree.com/zh/convert/hdr/)
+
+## 8. Fancy Border Shape Generator
+通过操纵border-radius生成各种形状，并且可以在项目的任何地方使用。你还可以更改形状的大小，以便根据项目偏好检查其外观。
+[https://9elements.github.io/fancy-border-radius/#51.49.53.50--477.477](https://9elements.github.io/fancy-border-radius/#51.49.53.50--477.477)
+
+
+## idea 30天无限重置包
 链接: [https://pan.baidu.com/s/1v5uFnPaTy77hKi7N9pdHHw?pwd=8937](https://pan.baidu.com/s/1v5uFnPaTy77hKi7N9pdHHw?pwd=8937)  
 提取码: 8937
 
 idea,webstorm都可以使用，这个包只支持2021.3.6以下的版本
 
-## 8. Navicat Premium 12(免费)
+## Navicat Premium 12(免费)
 
 Navicat Premium 数据库图形化界面  
 链接: [https://pan.baidu.com/s/1wIm38TST0-RtUV6mlSSgDg?pwd=vpwc](https://pan.baidu.com/s/1wIm38TST0-RtUV6mlSSgDg?pwd=vpwc)  
 提取码: vpwc 
 
-## 9. KeePass
+## KeePass
 KeePass 是一款高效的密码管理工具  
 链接: [https://pan.baidu.com/s/1x4dkSyz5hJC00bQ-1isg0A?pwd=c4ed](https://pan.baidu.com/s/1x4dkSyz5hJC00bQ-1isg0A?pwd=c4ed)  
 提取码: c4ed 
