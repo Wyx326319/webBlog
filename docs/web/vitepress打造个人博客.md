@@ -1,6 +1,7 @@
 # VitePress部署博客
 [VitePress官方地址](https://vitepress.dev/zh/reference/site-config)
  github,gitee都可以部署静态页面，这里使用gitee做介绍  
+ markdown语法介绍 [https://www.runoob.com/](https://www.runoob.com/)
 
 ## 踩坑1：项目部署完成后会出现页面或logo图标等404的问题或者样式丢失的问题
 ### 效果图

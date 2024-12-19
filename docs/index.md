@@ -12,7 +12,7 @@ hero:
   actions:
     - theme: brand
       text: Get Started
-      link: /introduce
+      link: /介绍
     - theme: alt
       text: View on Gitee
       link: /api-examples
