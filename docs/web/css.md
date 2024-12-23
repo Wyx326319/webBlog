@@ -96,7 +96,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Carver玩转css</title>
+    <title>玩转css</title>
     <style>
         *{
           margin: 0;
