@@ -6,35 +6,51 @@
     <title>Document</title>
 </head>
 <body>
+  <div id="app"></div>
     <script>
-function fn () {
-  return new Promise((resolve) => {
-    console.log('Promise1') // 第二步执行
-    fn1()
-    setTimeout(() => {
-      console.log('Promise2') // 放入宏任务队列 2
-      resolve() // fn状态改变
-      console.log('Promise3') // 放入宏任务队列 3
-    }, 0);
-  })
-}
-async function fn1() {
-  var p = Promise.resolve().then(() => {
-    console.log('Promise6') // 放入微任务队列1
-  })
-  await p.then(() => {
-    console.log('Promise7') // 放入微队列 2
-  })
-  console.log('end') // 第三步执行
-}
-console.log('script')  //第一步执行
-setTimeout(() => {
-  console.log('setTimeout') //宏任务队列 1
-}, 0)
-fn().then(() => {
-  console.log('Promise4') // 放入微队列
-})
+const container = document.getElementById("app")
 
+let vnode = {
+  tag: 'div',
+  props: {
+    onClick: () => alert("Click me")
+  },
+  children: [
+    {
+      tag: 'p',
+      props: {
+        class: 'name'
+      },
+      children: "我是一个p标签"
+    }
+  ]
+}
+
+renderer(vnode, container)
+/**
+ * vnode 虚拟对象
+ * container 需要挂载的真实dom
+ */
+function renderer (vnode,container) {
+  const el = document.createElement(vnode.tag)
+  console.log(el,"el")
+  for (const key in vnode.props) {
+    // 如果是事件
+    if(/^on/.test(key)){
+      el.addEventListener(key.substr(2).toLowerCase(), vnode.props[key])
+    }
+    el.setAttribute(key,vnode.props[key])
+  }
+  if(Array.isArray(vnode.children)){
+    // 递归的方式调用,渲染子节点
+    vnode.children.forEach(child => renderer(child, el))
+    
+  } else if(typeof vnode.children === 'string'){
+    el.appendChild(document.createTextNode(vnode.children))
+  }
+  // 将虚拟dom挂载到真实的dom元素上
+  container.appendChild(el)
+}
     </script>
 </body>
 </html>
