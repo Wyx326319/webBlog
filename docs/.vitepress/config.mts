@@ -8,7 +8,13 @@ export default defineConfig({
         // add plugin
         AutoSidebar(),
     ],
-},
+  },
+  markdown: {
+    image: {
+      // 默认禁用图片懒加载
+      lazyLoading: true
+    }
+  },
   lastUpdated: true,
   base: '',
   title: "王玉祥",
